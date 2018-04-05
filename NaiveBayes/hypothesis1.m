@@ -1,13 +1,13 @@
 %%                  Hypothesis-I - Discriminant Function
 
-function prediction = hypothesis1(testFaceIdx, totalClasses, testImage, mu, sigm, debug)
+function prediction = hypothesis1(totalClasses, testSet, mu, detSigma, invSigma, debug)
 
-for testImageNum = 1 : size(testFaceIdx,1)
+for testImageNum = 1 : size(testSet,2)
     for iter = 1 : totalClasses
-        hypothesis(:, iter) = [ (-1/2) * (testImage(:, testImageNum) - mu(:, iter))'*...
-                                    pinv(sigm(:, :, iter))*...
-                                    (testImage(:, testImageNum) - mu(:, iter))...
-                                    - (1/2) * log( det((sigm(:, :, iter))))...
+        hypothesis(:, iter) = [ (-1/2) * (testSet(1 : end - 1, testImageNum) - mu(:, iter))'*...
+                                    invSigma(:, :, iter)*...
+                                    (testSet(1 : end - 1, testImageNum) - mu(:, iter))...
+                                    - (1/2) * log(detSigma(iter))...
                                     iter];
     end
     
@@ -16,7 +16,7 @@ for testImageNum = 1 : size(testFaceIdx,1)
 %     fprintf("Class is %d", prediction1);
     if debug == 1
         formatSpec = 'Predicted class label of %d as %d \n';
-        fprintf(formatSpec,testImageNum, prediction(testImageNum));
+        fprintf(formatSpec, testSet(end, testImageNum), prediction(testImageNum));
     end
 end
 

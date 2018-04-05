@@ -1,10 +1,10 @@
 %%                         Feature Mean MLE
 
-function mu = estimateMean(totalClasses, imageClass)
+function mu = estimateMean(totalClasses, trainingSet)
 
 for iter = 1 : totalClasses
-    mu(:, iter) = imageClass(:, 1, iter) + imageClass(:, 2, iter);
-    mu(:, iter) = mu(:, iter)./2;
+    mu(:, iter) = sum(trainingSet(:, :, iter),2);
+    mu(:, iter) = mu(:, iter)./size(trainingSet,2);
 end
 
 end

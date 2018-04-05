@@ -1,14 +1,14 @@
 %%              Hypothesis-II - Probability Distribution Function
 
-function prediction = hypothesis2(testFaceIdx, totalClasses, testImage, mu, sigm, debug)
+function prediction = hypothesis2(totalClasses, testSet, mu, detSigma, invSigma, debug)
 
-for testImageNum = 1 : size(testFaceIdx,1)
+for testImageNum = 1 : size(testSet,2)
     for iter = 1 : totalClasses
-        hypothesis(:, iter) = [ 1/(sqrt(det((sigm(:, :, iter)))))*...
+        hypothesis(:, iter) = [ 1/(sqrt(detSigma(iter)))*...
                                     exp((-1/2)*...
-                                    (testImage(:, testImageNum) - mu(:, iter))'*...
-                                    pinv(sigm(:, :, iter))*...
-                                    (testImage(:, testImageNum) - mu(:, iter)))...
+                                    (testSet(1 : end - 1, testImageNum) - mu(:, iter))'*...
+                                    invSigma(:, :, iter)*...
+                                    (testSet(1 : end - 1, testImageNum) - mu(:, iter)))...
                                      iter];
     end
     
@@ -17,7 +17,7 @@ for testImageNum = 1 : size(testFaceIdx,1)
 %     fprintf("Class is %d", prediction2);
     if debug == 1
         formatSpec = 'Predicted class label of %d as %d \n';
-        fprintf(formatSpec,testImageNum, prediction(testImageNum));
+        fprintf(formatSpec, testSet(end, testImageNum), prediction(testImageNum));
     end
 end
 

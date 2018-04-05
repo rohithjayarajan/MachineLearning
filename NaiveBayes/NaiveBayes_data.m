@@ -13,58 +13,55 @@
 clear all;
 clc;
 
-load data.mat   %load the dataset to your workspace
-
-totalClasses = 200;     %represents the faces of 200 different people we have to correctly classify
 debug = 1;  %0/1: turn off/on prediction display for each test data, for each hypothesis
 
-%%                          Train-Test Split
-%Split the data into a train-test ratio of 2:1
+%%               User input to choose dataset to be loaded
 
-testFaceIdx = [ 2:3:600 ]';
-trainFacesIdx = [ 1:3:600; 3:3:600 ]';
+userChoice = chooseDataset();
+%%                  Extract information of dataset chosen
 
-%%                          Class Images
-
-%Pre-process the images in training data for easier manipulation
-imageClass = trainingData(totalClasses, trainFacesIdx, face);
+[totalClasses, trainingSet, testSet] = extractDatasetStats(userChoice);
 
 %%                         Feature Mean MLE
-
 %Estimate the Mean for the Multivariate Gaussian Distribution using
 %Maximum Likelihood Estimation
-mu = estimateMean(totalClasses, imageClass);
+
+mu = estimateMean(totalClasses, trainingSet);
 
 %%                       Feature Variance MLE
-
 %Estimate the Covariance for the Multivariate Gaussian Distribution using
 %Maximum Likelihood Estimation
-sigm = estimateCovariance(totalClasses, imageClass, mu);
+
+sigm = estimateCovariance(totalClasses, trainingSet, mu);
+
+%% Compute det|Covariance| and inv(Covariance)
+
+[detSigma, invSigma] = computeDetnInv(sigm, totalClasses);
 
 %%                              Test Data
-
 %Pre-process the images in test data for easier manipulation
-testImage = testData(totalClasses, face, testFaceIdx);
+
+% testImage = testData(totalClasses, face, testFaceIdx);
 
 %%                  Hypothesis-I - Discriminant Function
-
 %Predict the class of an unknown image data using the discriminant function
-prediction1 = hypothesis1(testFaceIdx, totalClasses, testImage, mu, sigm, debug);
+
+prediction1 = hypothesis1(totalClasses, testSet, mu, detSigma, invSigma, debug);
 
 %%                              Accuracy - Hypothesis-I
-
 %Calculate the accuracy of Hypothesis-I on test data 
-testAccuracy1 = accuracy(prediction1, totalClasses);
+
+testAccuracy1 = accuracy(prediction1, testSet(end, :));
 fprintf("Accuracy of classification using Hypothesis-I: %d \n", testAccuracy1);
 
 %%              Hypothesis-II - Probability Distribution Function
-
 %Predict the class of an unknown image data using the probability
 %distribution function
-prediction2 = hypothesis2(testFaceIdx, totalClasses, testImage, mu, sigm, debug);
+
+% prediction2 = hypothesis2(totalClasses, testSet, mu, detSigma, invSigma, debug);
 
 %%                              Accuracy - Hypothesis-II
-
 %Calculate the accuracy of Hypothesis-II on test data
-testAccuracy2 = accuracy(prediction2, totalClasses);
-fprintf("Accuracy of classification using Hypothesis-II: %d \n", testAccuracy2);
+
+% testAccuracy2 = accuracy(prediction2, testSet(end, :));
+% fprintf("Accuracy of classification using Hypothesis-II: %d \n", testAccuracy2);

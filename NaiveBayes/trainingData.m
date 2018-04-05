@@ -1,5 +1,5 @@
 %%                          Class Images
-function imageClass = trainingData(totalClasses, trainFacesIdx, face)
+function imageClass = trainingDataFace(totalClasses, trainFacesIdx, face)
 
 for iter = 1 : totalClasses
     for num = 1 : size(trainFacesIdx, 2)
