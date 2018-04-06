@@ -38,11 +38,6 @@ sigm = estimateCovariance(totalClasses, trainingSet, mu);
 
 [detSigma, invSigma] = computeDetnInv(sigm, totalClasses);
 
-%%                              Test Data
-%Pre-process the images in test data for easier manipulation
-
-% testImage = testData(totalClasses, face, testFaceIdx);
-
 %%                  Hypothesis-I - Discriminant Function
 %Predict the class of an unknown image data using the discriminant function
 
