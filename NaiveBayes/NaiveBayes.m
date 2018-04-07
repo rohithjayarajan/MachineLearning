@@ -1,11 +1,11 @@
-%NaiveBayes_main.m
+%NaiveBayes.m
 %
 %Predicts the class to which an image belongs using the Machine Learning
 %technique of Bayesian Classifiers. A gaussian distribution is modeled
 %using the training data and a hypothesis is used to evaluate classes
 %of unknown images.
 %
-%Dataset used is in data.mat 
+%Dataset used is data.mat, pose.mat or illumination.mat
 %
 %Both Hypothesis-I and Hypothesis-II give the same evaluation as both stem
 %from the same expression, i.e. the Multivaraite Gaussian Distribution
@@ -18,7 +18,8 @@ debug = 1;  %0/1: turn off/on prediction display for each test data, for each hy
 %%               User input to choose dataset to be loaded
 
 userChoice = chooseDataset();
-%%                  Extract information of dataset chosen
+
+%%           Extract information and Train-Test data from dataset
 
 [totalClasses, trainingSet, testSet] = extractDatasetStats(userChoice);
 
@@ -43,7 +44,7 @@ sigm = estimateCovariance(totalClasses, trainingSet, mu);
 
 prediction1 = hypothesis1(totalClasses, testSet, mu, detSigma, invSigma, debug);
 
-%%                              Accuracy - Hypothesis-I
+%%                        Accuracy - Hypothesis-I
 %Calculate the accuracy of Hypothesis-I on test data 
 
 testAccuracy1 = accuracy(prediction1, testSet(end, :));
@@ -55,7 +56,7 @@ fprintf("Accuracy of classification using Hypothesis-I: %d \n", testAccuracy1);
 
 % prediction2 = hypothesis2(totalClasses, testSet, mu, detSigma, invSigma, debug);
 
-%%                              Accuracy - Hypothesis-II
+%%                         Accuracy - Hypothesis-II
 %Calculate the accuracy of Hypothesis-II on test data
 
 % testAccuracy2 = accuracy(prediction2, testSet(end, :));

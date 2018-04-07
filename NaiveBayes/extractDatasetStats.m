@@ -33,8 +33,16 @@ if userChoice == 2
     %%                          Train-Test Split
     %Split the data into a train-test ratio of 2:1
 
-    trainFaceIdx = [ 1:9 ]';
-    testFaceIdx = [ 10:13 ]';
+    prompt = {'Choose train-test split (0%-100%)'};
+    dlg_title = 'Input';
+    num_lines = 1;
+    defaultans = {'70'};
+    answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    split = str2double(answer)/100;
+    
+    testEnd = ceil(split*size(face, 3));
+    trainFaceIdx = [ 1 : testEnd ]';
+    testFaceIdx = [ testEnd + 1 : 21 ]';
     
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
@@ -52,8 +60,16 @@ if userChoice == 3
     %%                          Train-Test Split
     %Split the data into a train-test ratio of 2:1
 
-    trainFaceIdx = [ 1:14 ]';
-    testFaceIdx = [ 15:21 ]';
+    prompt = {'Choose train-test split (0%-100%)'};
+    dlg_title = 'Input';
+    num_lines = 1;
+    defaultans = {'70'};
+    answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+    split = str2double(answer)/100;
+    
+    testEnd = ceil(split*size(face, 2));
+    trainFaceIdx = [ 1 : testEnd ]';
+    testFaceIdx = [ testEnd + 1 : 21 ]';
     
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
