@@ -40,9 +40,9 @@ if userChoice == 2
     answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
     split = str2double(answer)/100;
     
-    testEnd = ceil(split*size(face, 3));
+    testEnd = ceil(split*size(face, 2));
     trainFaceIdx = [ 1 : testEnd ]';
-    testFaceIdx = [ testEnd + 1 : 21 ]';
+    testFaceIdx = [ testEnd + 1 : 13 ]';
     
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
