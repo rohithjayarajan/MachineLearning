@@ -81,4 +81,4 @@ predictedClass = KNNprediction(testSet, trainingSet, K);
 %Calculate the accuracy of Prediction on test data
 
 testAccuracy = accuracy(predictedClass, testSet(end, :));
-fprintf("Accuracy of classification using KNN: %d %% \n", testAccuracy);
+fprintf("Accuracy of classification using KNN: %d \n", testAccuracy);

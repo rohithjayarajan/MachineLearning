@@ -1,5 +1,5 @@
 function [totalClasses, trainingSet, testSet] = extractDatasetStats(userChoice)
-
+PCA = 1;
 %%
 if userChoice == 1
     
@@ -9,11 +9,17 @@ if userChoice == 1
     %%                          Train-Test Split
     %Split the data into a train-test ratio of 2:1
 
-    trainFaceIdx = [ 1:3:600; 3:3:600 ]';
-    testFaceIdx = [ 2:3:600 ]';
+    trainFaceIdx = [ 2:3:600; 3:3:600 ]';
+    testFaceIdx = [ 1:3:600 ]';
     
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
+    if PCA == 1
+        featureMean = mean(face, 3);
+        for iter = 1 : 600
+            face(:, :, iter) = face(:, :, iter) - featureMean;
+        end
+    end
     
     [trainingSet, testSet] = dataSetFace(totalClasses, trainFaceIdx, testFaceIdx, face);
     
@@ -36,7 +42,7 @@ if userChoice == 2
     prompt = {'Choose train-test split (0%-100%)'};
     dlg_title = 'Input';
     num_lines = 1;
-    defaultans = {'70'};
+    defaultans = {'66'};
     answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
     split = str2double(answer)/100;
     
@@ -46,6 +52,15 @@ if userChoice == 2
     
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
+    face = reshape(face, [1920, 13*68]);
+    if PCA == 1
+        featureMean = mean(face, 2);
+        for iter = 1 : 13*68
+            face(:, iter) = face(:, iter) - featureMean;
+        end
+    end
+    
+    face = reshape(face, [1920, 13, 68]);
     
     [trainingSet, testSet] = dataSetPoseIllum(totalClasses, trainFaceIdx, testFaceIdx, face);
     
@@ -63,7 +78,7 @@ if userChoice == 3
     prompt = {'Choose train-test split (0%-100%)'};
     dlg_title = 'Input';
     num_lines = 1;
-    defaultans = {'70'};
+    defaultans = {'66'};
     answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
     split = str2double(answer)/100;
     
@@ -74,6 +89,15 @@ if userChoice == 3
     %%                          Processed Data Sets
     %Process the images into training and test data for easier manipulation
     
+    face = reshape(face, [1920, 21*68]);
+    if PCA == 1
+        featureMean = mean(face, 2);
+        for iter = 1 : 13*68
+            face(:, iter) = face(:, iter) - featureMean;
+        end
+    end
+    
+    face = reshape(face, [1920, 21, 68]);
     [trainingSet, testSet] = dataSetPoseIllum(totalClasses, trainFaceIdx, testFaceIdx, face);
 end
 

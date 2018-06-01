@@ -13,7 +13,7 @@ for testImageNum = 1 : size(testSet,2)
     
     decision = sortrows(hypothesis', 'descend');
     prediction(testImageNum) = decision(1,2);
-%     fprintf("Class is %d", prediction1);
+    
     if debug == 1
         formatSpec = 'Predicted class label of %d as %d \n';
         fprintf(formatSpec, testSet(end, testImageNum), prediction(testImageNum));
